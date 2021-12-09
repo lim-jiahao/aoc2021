@@ -13,10 +13,11 @@ let aim = 0;
 text.forEach((element) => {
   if (element[0] === "forward") {
     x += Number(element[1]);
+    y += aim * Number(element[1]);
   } else if (element[0] === "up") {
-    y -= Number(element[1]);
+    aim -= Number(element[1]);
   } else {
-    y += Number(element[1]);
+    aim += Number(element[1]);
   }
 });
 
