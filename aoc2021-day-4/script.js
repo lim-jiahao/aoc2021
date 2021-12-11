@@ -15,27 +15,31 @@ while (text.length > 0) {
 // console.log(inputs)
 // console.log(boards);
 
-const markNumber = (board, input) => {
+const didBoardWin = (board, input) => {
   for (let i = 0; i < board.length; i += 1) {
     const row = board[i];
     for (let j = 0; j < row.length; j += 1) {
       if (row[j] === input) {
         row[j] = -1;
-        if (row.every((el) => el === -1) || board.every((el) => el[j] === -1)) return board;
+        if (row.every((el) => el === -1) || board.every((el) => el[j] === -1)) return true;
       }
     }
   }
-  return null;
+  return false;
 }
 
 let winningBoard;
 let winningInput;
+let boardsWon = [];
 loop1: for (let i = 0; i < inputs.length; i += 1) {
   for (let j = 0; j < boards.length; j += 1) {
-    winningBoard = markNumber(boards[j], inputs[i]);
-    if (winningBoard) {
-      winningInput = inputs[i];
-      break loop1;
+    if (!boardsWon.includes(j) && didBoardWin(boards[j], inputs[i])) {
+      boardsWon.push(j);
+      if (boardsWon.length === boards.length) {
+        winningBoard = boards[j];
+        winningInput = inputs[i];
+        break loop1;
+      }
     }
   }
 }
@@ -43,4 +47,3 @@ loop1: for (let i = 0; i < inputs.length; i += 1) {
 winningBoard = winningBoard.flat();
 const sumUnmarked = winningBoard.reduce((acc, cur) => cur !== -1 ? acc + cur : acc, 0)
 console.log(sumUnmarked * winningInput);
-
