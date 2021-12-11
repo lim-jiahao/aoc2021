@@ -50,6 +50,6 @@ const findCarbon = (arr) => {
   carbonIndex += 1;
   return findCarbon(arr);
 };
-console.log(parseInt(findOxy(oxyArr), 2));
-console.log(parseInt(findCarbon(co2Arr), 2));
+// console.log(parseInt(findOxy(oxyArr), 2));
+// console.log(parseInt(findCarbon(co2Arr), 2));
 console.log(parseInt(findOxy(oxyArr), 2) * parseInt(findCarbon(co2Arr), 2));
