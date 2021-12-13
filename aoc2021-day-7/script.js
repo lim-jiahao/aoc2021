@@ -8,7 +8,11 @@ const max = Math.max(...positions);
 let curOptimalPos = -1;
 let curOptimalFuel = Infinity;
 for (let i = min; i <= max; i += 1) {
-  let outcome = positions.reduce((acc, cur) => acc + Math.abs(cur - i), 0);
+  const outcome = positions.reduce((acc, cur) => {
+    const n = Math.abs(cur - i);
+    return acc + n * (n + 1) / 2;
+  }, 0);
+
   if (outcome <= curOptimalFuel) {
     curOptimalPos = i;
     curOptimalFuel = outcome;
