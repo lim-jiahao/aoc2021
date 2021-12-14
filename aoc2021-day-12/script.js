@@ -8,12 +8,9 @@ let text = fs
 let mappings = {};
 
 text.forEach((edge) => {
-  if (!mappings[edge[0]]) {
-    mappings[edge[0]] = [];
-  }
-  if (!mappings[edge[1]]) {
-    mappings[edge[1]] = [];
-  }
+  if (!mappings[edge[0]]) mappings[edge[0]] = [];
+  if (!mappings[edge[1]]) mappings[edge[1]] = [];
+
   mappings[edge[0]].push(edge[1]);
   mappings[edge[1]].push(edge[0]);
 });
@@ -25,22 +22,35 @@ text.flat().forEach((el) => {
 });
 console.log(mappings);
 // console.log(isVisited);
+
 const findPath = (node, visitObj) => {
   if (node === "end") {
     noOfPaths += 1;
     return;
   }
+
+  let isVisitedClone = { ...visitObj };
+  isVisitedClone[node] = isVisitedClone[node] + 1;
+
+  let length = Object.keys(isVisitedClone).filter(
+    (el) => el === el.toLowerCase() && isVisitedClone[el] >= 2
+  ).length;
+
+  let smallCaveMax = length > 0 ? 1 : 2;
   if (
-    mappings[node].every((el) => el === el.toLowerCase() && visitObj[el] >= 1)
+    !mappings[node].some(
+      (el) => (el === el.toUpperCase()) || (el === el.toLowerCase() && isVisitedClone[el] < smallCaveMax)
+    )
   ) {
     //check if it is a dead end
     return;
   }
-  let isVisitedClone = { ...visitObj };
-  isVisitedClone[node] = isVisitedClone[node] + 1;
+
   mappings[node].forEach((path) => {
-    if (path === path.toUpperCase() || isVisitedClone[path] === 0) {
-      findPath(path, isVisitedClone);
+    if (path !== "start") {
+      if (path === path.toUpperCase() || isVisitedClone[path] < smallCaveMax) {
+        findPath(path, isVisitedClone);
+      }
     }
   });
 };
